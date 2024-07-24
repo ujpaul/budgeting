@@ -25,30 +25,26 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         String token = extractToken(request);
 
-        if (token != null) {
-            if (jwtProvider.isValidToken(token)) {
-                String username = jwtProvider.getUserName(token);
-                if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-                    UsernamePasswordAuthenticationToken authenticationToken =
-                            new UsernamePasswordAuthenticationToken(username, null, null);
-                    SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-                }
-            } else {
-                request.setAttribute("invalidToken", true); // Set the flag for invalid token
+        if (token != null && jwtProvider.isValidToken(token)) {
+            String username = jwtProvider.getUserName(token);
+            Long userId = jwtProvider.getUserIdFromToken(token);
+            System.out.println("Extracted userId from token:" +userId);
+            if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                UsernamePasswordAuthenticationToken authenticationToken =
+                        new UsernamePasswordAuthenticationToken(username, null, null);
+                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+                request.setAttribute("userId", userId);
             }
         }
 
-        response.setHeader("Access-Control-Allow-Origin", "*"); // Allow all origins, adjust as needed
+        response.setHeader("Access-Control-Allow-Origin", "*");
         response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE, PUT");
         response.setHeader("Access-Control-Allow-Headers", "Authorization, Content-Type, Accept");
 
         filterChain.doFilter(request, response);
     }
 
-
-
     private String extractToken(HttpServletRequest request) {
-        // Extract the token from the request header or query parameter
         String bearerToken = request.getHeader("Authorization");
         if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
             return bearerToken.substring(7);

@@ -20,6 +20,7 @@ public class ExpenseDto {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate endDate;
     private Integer expenseFrequency;
+    private Integer processed;
 
 
 }

@@ -5,9 +5,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
-public interface UserRepository extends JpaRepository<UserEntity, Integer> {
+public interface UserRepository extends JpaRepository<UserEntity, Long> {
     @Override
-    Optional<UserEntity> findById(Integer userId);
+    Optional<UserEntity> findById(Long userId);
     Optional<UserEntity> findByUserName(String username);
     Optional<UserEntity> findByUserNameAndPassword(String username, String password);
 }

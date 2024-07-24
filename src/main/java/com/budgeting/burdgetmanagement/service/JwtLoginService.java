@@ -51,7 +51,7 @@ public class JwtLoginService {
                  user = optionalUsers.get();
             }
             if (isCorrectCredentials) {
-                String token = jwtProvider.createJwtToken(userName);
+                String token = jwtProvider.createJwtToken(userName,user.getUserId());
                 responseDto = new ResponseDto("Login successfully",jwtProvider.getExpiryDate(token), 200, token, userName);
             } else {
                 responseDto = new ResponseDto(

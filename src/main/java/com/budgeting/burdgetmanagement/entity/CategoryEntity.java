@@ -1,5 +1,7 @@
 package com.budgeting.burdgetmanagement.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -9,8 +11,6 @@ import java.util.Set;
 
 @Entity
 @Table(name = "category")
-@Data
-@NoArgsConstructor
 public class CategoryEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,11 +18,52 @@ public class CategoryEntity {
     private String categoryName;
     private LocalDate createdAt;
 
+
+    @JsonManagedReference
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<SubCategoryEntity> subcategory;
+
+    // Getters and setters
+
+    public Long getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(Long categoryId) {
+        this.categoryId = categoryId;
+    }
+
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
+    }
+
     public LocalDate getCreatedAt() {
         return createdAt;
     }
 
-    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<SubCategoryEntity> subcategory;
+    public void setCreatedAt(LocalDate createdAt) {
+        this.createdAt = createdAt;
+    }
 
+    public Set<SubCategoryEntity> getSubcategory() {
+        return subcategory;
+    }
+
+    public void setSubcategory(Set<SubCategoryEntity> subcategory) {
+        this.subcategory = subcategory;
+    }
+
+    @Override
+    public String toString() {
+        return "CategoryEntity{" +
+                "categoryId=" + categoryId +
+                ", categoryName='" + categoryName + '\'' +
+                ", createdAt=" + createdAt +
+                ", subcategory=" + subcategory +
+                '}';
+    }
 }

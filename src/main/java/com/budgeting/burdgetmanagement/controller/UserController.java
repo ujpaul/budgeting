@@ -31,4 +31,13 @@ public class UserController {
         ResponseDto response =jwtLoginService.login(loginDto);
         return response;
     }
+    @GetMapping("/user")
+    public String getCurrentUser(HttpServletRequest request) {
+        Long userId = (Long) request.getAttribute("userId");
+        return "Logged in user ID: " + userId;
+    }
+    @GetMapping("/loggedInUser")
+    public String getLoggedInUserId(@RequestAttribute("userId") Long userId) {
+        return "Logged in user ID: " + userId;
+    }
 }

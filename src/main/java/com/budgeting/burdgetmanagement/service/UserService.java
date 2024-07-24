@@ -19,7 +19,7 @@ public class UserService {
     public UserEntity saveUser(LoginDto loginDto){
         String hashedPassword = passwordService.hashPassword(loginDto.getPassword());
         UserEntity user = new UserEntity();
-        user.setUsername(loginDto.getUsername());
+        user.setUserName(loginDto.getUsername());
         user.setPassword(hashedPassword);
         return userRepository.save(user);
     }

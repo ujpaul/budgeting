@@ -4,6 +4,7 @@ import com.budgeting.burdgetmanagement.entity.CategoryEntity;
 import com.budgeting.burdgetmanagement.repository.CategoryRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,6 +22,8 @@ public class CategoryService {
         return categoryRepository.findById(id);
     }
     public CategoryEntity saveCategory(CategoryEntity category){
+        category.setCreatedAt(LocalDate.now());
+
         return categoryRepository.save(category);
     }
     public CategoryEntity updateCategory(Long id, CategoryEntity category){

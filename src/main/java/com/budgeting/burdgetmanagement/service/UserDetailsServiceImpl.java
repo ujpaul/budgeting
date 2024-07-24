@@ -24,7 +24,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         // Create and return a UserDetails object based on the retrieved user entity
         return org.springframework.security.core.userdetails.User.builder()
-                .username(user.getUsername())
+                .username(user.getUserName())
                 .password(user.getPassword())
                 .roles("USER")  // Set the user's roles here if applicable
                 .build();

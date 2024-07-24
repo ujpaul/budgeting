@@ -17,9 +17,7 @@ import org.springframework.stereotype.Service;
 import io.jsonwebtoken.*;
 
 import java.security.SignatureException;
-import java.util.Date;
-import java.util.UUID;
-import java.util.Base64;
+import java.util.*;
 
 
 @Service
@@ -55,28 +53,32 @@ public class JwtProvider {
     }
 
     @SuppressWarnings("deprecation")
-    public String createJwtToken(String username) {
-        System.out.println("Incoming username:"+ username);
+    public String createJwtToken(String username, Long userId) {
         try {
+            Map<String, Object> claims = new HashMap<>();
+            claims.put("userId", userId);
 
-            String token = Jwts.builder().setSubject(username)
+            String token = Jwts.builder()
+                    .setClaims(claims)
+                    .setSubject(username)
                     .setIssuer("paul@test.com")
                     .setIssuedAt(new Date())
                     .setId(UUID.randomUUID().toString())
-                    .setExpiration(new Date(System.currentTimeMillis() + (3600000 * 5)))
+                    .setExpiration(new Date(System.currentTimeMillis() + (3600000 * 5))) // 5 hours
                     .signWith(SignatureAlgorithm.HS512, SECRET_KEY)
                     .compact();
             return token;
-
         } catch (Exception ex) {
-            System.out.println("Token not created:" + ex.getMessage());
-//            logger.error("ERROR:" + ex.getMessage());
+            System.out.println("Token not created: " + ex.getMessage());
             return "";
         }
-
     }
 
 
+    public Long getUserIdFromToken(String token) {
+        Claims claims = getClaimsFromToken(token);
+        return claims.get("userId", Long.class);
+    }
 
     private Claims getClaimsFromToken(String token) {
         Claims claims = null;

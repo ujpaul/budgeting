@@ -24,12 +24,15 @@ public class ExpenseController {
     }
     @PostMapping("")
     public ExpenseEntity saveExpense(@RequestBody ExpenseDto expenseDto){
-        System.out.println("Expense DTO:" + expenseDto);
         return expenseService.saveExpense(expenseDto);
     }
     @DeleteMapping("/{id}")
     public void deleteExpense(@PathVariable Long id){
         expenseService.deleteExpense(id);
+    }
+    @PutMapping("/{id}")
+    public ExpenseEntity updateExpense(@PathVariable Long id, @RequestBody ExpenseDto expenseDto){
+        return expenseService.updateExpense(id,expenseDto);
     }
 
 }
